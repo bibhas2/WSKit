@@ -1,0 +1,6 @@
+framework module Pods_WSKit {
+  umbrella header "Pods-WSKit-umbrella.h"
+
+  export *
+  module * { export * }
+}
