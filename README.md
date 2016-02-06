@@ -33,3 +33,15 @@ WS.url("https://httpbin.org/post")
         print(err)
     }
 ```
+
+## API Documentation
+View full [API documentation](docs/index.html) online.
+
+## Installation
+You can add WSKit to your project using Cocoapod.
+
+```
+target 'WSKitExample' do
+    pod 'WSKit', :git => "https://github.com/bibhas2/WSKit.git", :tag => "1.0.3"
+end
+```
