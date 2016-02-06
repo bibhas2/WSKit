@@ -35,7 +35,7 @@ WS.url("https://httpbin.org/post")
 ```
 
 ## API Documentation
-View full [API documentation](docs/index.html) online.
+View full [API documentation](http://bibhas2.github.io/WSKit/docs/index.html) online.
 
 ## Installation
 You can add WSKit to your project using Cocoapod.
