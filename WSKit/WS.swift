@@ -12,14 +12,14 @@ import PromiseKit
 /**
  WS is a class that simplifies asynchronous RESTful client development. It also adds
  retry of GET calls. It is modeled after the WS class of the Play framework.
-*/
-class WS {
-    class func url(url: String) -> WSRequest {
+ */
+public class WS {
+    public class func url(url: String) -> WSRequest {
         return WSRequest(url: url)
     }
 }
 
-class WSResponse {
+public class WSResponse {
     var raw : NSData
     var response:NSHTTPURLResponse
     
@@ -28,11 +28,11 @@ class WSResponse {
         response = res
     }
     
-    lazy var body: String = {
+    public lazy var body: String = {
         String(data: self.raw, encoding: NSUTF8StringEncoding)!
     }()
     
-    lazy var json:AnyObject? = self.jsonBuilder()
+    public lazy var json:AnyObject? = self.jsonBuilder()
     
     func jsonBuilder() -> AnyObject? {
         var res : AnyObject? = nil
@@ -49,34 +49,34 @@ class WSResponse {
     }
 }
 
-class WSRequest {
+public class WSRequest {
     /**
-    The maximum number of times a GET call is attempted in case of a network failure. Any failure
+     The maximum number of times a GET call is attempted in case of a network failure. Any failure
      indicated by a HTTP reply status code is not retried. Retry count for all methods other than GET is always 1.
-    */
-    var maxTries = 1
-
+     */
+    public var maxTries = 1
+    
     private var retryCount = 0
-    var url : NSURL
-    var body : NSData?
-    var headers = [String:String]()
-    var method = "GET"
+    public var url : NSURL
+    public var body : NSData?
+    public var headers = [String:String]()
+    public var method = "GET"
     /**
-    Create a new WS object.
+     Create a new WS object.
      
      - parameter url: The URL to send the request to.
-    */
+     */
     init(url:String) {
         self.url = NSURL(string: url)!
     }
     
-    func withBody(body: String) -> WSRequest {
+    public func withBody(body: String) -> WSRequest {
         self.body = body.dataUsingEncoding(NSUTF8StringEncoding)
         
         return self
     }
-
-    func withBody(body: AnyObject) throws -> WSRequest {
+    
+    public func withBody(body: AnyObject) throws -> WSRequest {
         self.body = try NSJSONSerialization.dataWithJSONObject(body, options: NSJSONWritingOptions(rawValue:0))
         
         self.headers["Content-Type"] = "application/json"
@@ -84,13 +84,13 @@ class WSRequest {
         return self
     }
     
-    func withMethod(method: String) -> WSRequest {
+    public func withMethod(method: String) -> WSRequest {
         self.method = method
         
         return self
     }
-
-    func withHeaders(headers : [String:String]) -> WSRequest {
+    
+    public func withHeaders(headers : [String:String]) -> WSRequest {
         for (key, value) in headers {
             self.headers[key] = value
         }
@@ -103,26 +103,26 @@ class WSRequest {
      
      - returns: A Promise object. In case of success this promise will return a String containing the body of the response.
      In case of error this promise will offer an NSError object.
-    */
-    func get() -> Promise<WSResponse> {
+     */
+    public func get() -> Promise<WSResponse> {
         maxTries = 5
         
         return self.withMethod("GET").execute()
     }
-
-    func post(body:String) -> Promise<WSResponse> {
+    
+    public func post(body:String) -> Promise<WSResponse> {
         maxTries = 1
         
         return self.withMethod("POST").withBody(body).execute()
     }
-
-    func post() -> Promise<WSResponse> {
+    
+    public func post() -> Promise<WSResponse> {
         maxTries = 1
         
         return self.withMethod("POST").execute()
     }
     
-    func execute() -> Promise<WSResponse> {
+    public func execute() -> Promise<WSResponse> {
         let session = NSURLSession.sharedSession()
         let request = NSMutableURLRequest(URL: url, cachePolicy: NSURLRequestCachePolicy.UseProtocolCachePolicy, timeoutInterval: 60.0)
         
@@ -158,15 +158,15 @@ class WSRequest {
                         self.execute().then {body -> Void in
                             print("+++Fulfilling attempt: \(attempt)")
                             fulfill(body)
-                        }.error {err in
-                            print("+++Rejecting attempt: \(attempt)")
-                            reject(err)
+                            }.error {err in
+                                print("+++Rejecting attempt: \(attempt)")
+                                reject(err)
                         }
                     } else {
                         print("***Rejecting attempt: \(attempt)")
                         reject(error!)
                     }
-
+                    
                 }
             }
             
