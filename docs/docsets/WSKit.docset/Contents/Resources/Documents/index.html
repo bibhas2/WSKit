@@ -59,10 +59,9 @@ network connection can be unreliable.</li>
 <a href='#example' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='example'>Example</h3>
 
 <p>A simple GET request.</p>
-<pre class="highlight swift"><code><span class="kt">WS</span><span class="o">.</span><span class="nf">url</span><span class="p">(</span><span class="s">"http://httpbin.org/get"</span><span class="p">)</span><span class="o">.</span><span class="nf">get</span><span class="p">()</span>
+<pre class="highlight swift"><code><span class="kt">WS</span><span class="o">.</span><span class="nf">url</span><span class="p">(</span><span class="s">"https://example.com"</span><span class="p">)</span><span class="o">.</span><span class="nf">get</span><span class="p">()</span>
     <span class="o">.</span><span class="n">then</span> <span class="p">{</span> <span class="p">(</span><span class="n">res</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span> <span class="k">in</span>
-        <span class="k">let</span> <span class="nv">body</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="nf">body</span><span class="p">()</span>
-        <span class="nf">print</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
     <span class="p">}</span><span class="o">.</span><span class="n">error</span> <span class="p">{</span><span class="n">err</span> <span class="k">in</span>
         <span class="nf">print</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
     <span class="p">}</span>
@@ -72,15 +71,24 @@ network connection can be unreliable.</li>
 status code is more than <code>400</code>.</p>
 
 <p>A simple POST example:</p>
-<pre class="highlight swift"><code><span class="kt">WS</span><span class="o">.</span><span class="nf">url</span><span class="p">(</span><span class="s">"http://httpbin.org/post"</span><span class="p">)</span>
+<pre class="highlight swift"><code><span class="kt">WS</span><span class="o">.</span><span class="nf">url</span><span class="p">(</span><span class="s">"https://httpbin.org/post"</span><span class="p">)</span>
     <span class="o">.</span><span class="nf">withHeaders</span><span class="p">([</span><span class="s">"Content-Type"</span><span class="p">:</span><span class="s">"application/json"</span><span class="p">])</span>
     <span class="o">.</span><span class="nf">post</span><span class="p">(</span><span class="s">"{'hello':'mama'}"</span><span class="p">)</span>
     <span class="o">.</span><span class="n">then</span> <span class="p">{</span> <span class="p">(</span><span class="n">res</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span> <span class="k">in</span>
-        <span class="k">let</span> <span class="nv">body</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="nf">body</span><span class="p">()</span>
-        <span class="nf">print</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
     <span class="p">}</span><span class="o">.</span><span class="n">error</span> <span class="p">{</span><span class="n">err</span> <span class="k">in</span>
         <span class="nf">print</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
     <span class="p">}</span>
+</code></pre>
+<a href='#api_documentation' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='api_documentation'>API Documentation</h2>
+
+<p>View full <a href="http://bibhas2.github.io/WSKit/docs/index.html">API documentation</a> online.</p>
+<a href='#installation' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='installation'>Installation</h2>
+
+<p>You can add WSKit to your project using Cocoapod.</p>
+<pre class="highlight plaintext"><code>target 'WSKitExample' do
+    pod 'WSKit', :git =&gt; "https://github.com/bibhas2/WSKit.git", :tag =&gt; "1.0.3"
+end
 </code></pre>
 
           </section>
