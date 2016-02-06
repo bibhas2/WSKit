@@ -1,3 +1,0 @@
-WS.swift
-	public class WSResponse
-	public class WSRequest
