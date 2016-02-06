@@ -10,10 +10,9 @@ network connection can be unreliable.
 A simple GET request.
 
 ```swift
-WS.url("http://httpbin.org/get").get()
+WS.url("https://example.com").get()
     .then { (res) -> Void in
-        let body = res.body()
-        print(body)
+        print(res.body)
     }.error {err in
         print(err)
     }
@@ -25,12 +24,11 @@ status code is more than ``400``.
 A simple POST example:
 
 ```swift
-WS.url("http://httpbin.org/post")
+WS.url("https://httpbin.org/post")
     .withHeaders(["Content-Type":"application/json"])
     .post("{'hello':'mama'}")
     .then { (res) -> Void in
-        let body = res.body()
-        print(body)
+        print(res.body)
     }.error {err in
         print(err)
     }
