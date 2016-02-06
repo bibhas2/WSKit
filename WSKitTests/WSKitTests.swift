@@ -27,7 +27,7 @@ class WSKitTests: XCTestCase {
         WS.url("http://httpbin.org/get")
             .get()
             .then { (res) -> Void in
-                let body = res.body()
+                let body = res.body
                 print(body)
                 let range = body.rangeOfString("Accept-Encoding")
                 XCTAssertNotEqual(range, nil)
@@ -51,11 +51,11 @@ class WSKitTests: XCTestCase {
         WS.url("http://httpbin.org/get")
             .get()
             .then { (res) -> Void in
-                do {
-                    let obj = try res.json() as! [String:AnyObject]
+                if let json = res.json {
+                    var obj = json as! [String:AnyObject]
                     
                     XCTAssertEqual(obj["url"] as? String, Optional.Some("http://httpbin.org/get"))
-                } catch {
+                } else {
                     XCTFail("Got error trying to get JSON")
                 }
                 feature.fulfill()
@@ -78,11 +78,9 @@ class WSKitTests: XCTestCase {
         WS.url("http://example.com")
             .get()
             .then { (res) -> Void in
-                do {
-                    try res.json()
-                    
+                if let _ = res.json {
                     XCTFail("JSON parsing should have failed")
-                } catch {
+                } else {
                     print("Got error trying to get JSON. This was expected.")
                 }
                 feature.fulfill()
@@ -102,12 +100,11 @@ class WSKitTests: XCTestCase {
     func testResponseStatus() {
         let feature = self.expectationWithDescription("Test")
         
-        //Make a GET request to a URL that only supports POST
-        WS.url("http://httpbin.org/post")
+        //Response will have 404 status
+        WS.url("http://httpbin.org/get/404")
             .get()
             .then { (res) -> Void in
-                let body = res.body()
-                print(body)
+                print(res.body)
                 XCTFail("This request should fail.")
                 feature.fulfill()
             }.error {err in
@@ -130,7 +127,7 @@ class WSKitTests: XCTestCase {
             .withHeaders(["Content-Type":"application/json"])
             .post("{'hello':'mama'}")
             .then { (res) -> Void in
-                let body = res.body()
+                let body = res.body
                 print(body)
                 let range = body.rangeOfString("{'hello':'mama'}")
                 XCTAssertNotEqual(range, nil)
@@ -159,7 +156,7 @@ class WSKitTests: XCTestCase {
                 .withMethod("POST")
                 .execute()
                 .then { (res) -> Void in
-                    let body = res.body()
+                    let body = res.body
                     print(body)
                     let range = body.rangeOfString("{\\\"planet\\\":\\\"World\\\",\\\"population\\\":7000000000}")
                     XCTAssertNotEqual(range, nil)
@@ -186,5 +183,4 @@ class WSKitTests: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
-   
 }

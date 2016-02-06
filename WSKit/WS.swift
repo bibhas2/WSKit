@@ -28,14 +28,24 @@ class WSResponse {
         response = res
     }
     
-    func body() -> String {
-        return String(data: raw, encoding: NSUTF8StringEncoding)!
-    }
+    lazy var body: String = {
+        String(data: self.raw, encoding: NSUTF8StringEncoding)!
+    }()
     
-    func json() throws -> AnyObject {
-        return try NSJSONSerialization.JSONObjectWithData(
-            self.raw,
-            options: NSJSONReadingOptions(rawValue: 0))
+    lazy var json:AnyObject? = self.jsonBuilder()
+    
+    func jsonBuilder() -> AnyObject? {
+        var res : AnyObject? = nil
+        
+        do {
+            res = try NSJSONSerialization.JSONObjectWithData(
+                self.raw,
+                options: NSJSONReadingOptions(rawValue: 0))
+        } catch let error as NSError {
+            print("Error parsing JSON \(error)")
+        }
+        
+        return res
     }
 }
 
@@ -134,7 +144,7 @@ class WSRequest {
             let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
                 if (error == nil) {
                     let httpsResponse = response as! NSHTTPURLResponse
-                    if (httpsResponse.statusCode == 200) {
+                    if (httpsResponse.statusCode < 400) {
                         fulfill(WSResponse(data: data!, res: httpsResponse))
                     } else {
                         reject(NSError(domain: "WS", code: 0, userInfo: ["message" :"Invalid status code: \(httpsResponse.statusCode)"]))
